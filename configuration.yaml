@@ -1,0 +1,85 @@
+config: 
+frontend:
+  themes: !include_dir_merge_named themes
+mobile_app:
+ssdp:
+#logbook:
+#zeroconf:
+person:
+system_health:
+recorder:
+history:
+#sun:
+api:
+#cloud:
+speedtestdotnet:
+shelly:
+updater:
+
+http:
+  ssl_certificate: /etc/hassssl/fullchain.pem
+  ssl_key: /etc/hassssl/privkey.pem
+  use_x_forwarded_for: true
+  trusted_proxies: 127.0.0.1
+
+pi_hole:
+  - host: 10.0.0.3
+
+sensor:
+  - platform: template
+    sensors:
+      bahn_delay:
+        friendly_name: "Bahn S1 Delay"
+        unit_of_measurement: 'minutes'
+        value_template: "{{ state_attr('sensor.duisburg_schlenk_to_dusseldorf_zoo', 'delay') }}"
+      power_draw_total:
+        friendly_name: "Power Draw Total"
+        unit_of_measurement: 'W'
+        value_template: "{{ float(states('sensor.bedroom_electronics_energy_power')) + float(states('sensor.computer_tv_network_energy_power')) + float(states('sensor.fridge_freezer_coffee_machine_energy_power')) + float(states('sensor.washing_machine_energy_power'))}}"
+      power_consume_total_yesterday:
+        friendly_name: "Power Consume Total Yesterday"
+        unit_of_measurement: 'kWh'
+        value_template: "{{ float(states('sensor.bedroom_electronics_energy_yesterday')) + float(states('sensor.computer_tv_network_energy_yesterday')) + float(states('sensor.fridge_freezer_coffee_machine_energy_yesterday')) + float(states('sensor.washing_machine_energy_yesterday'))}}"
+
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: memory_free
+      - type: memory_use_percent
+      - type: load_5m
+  - platform: cpuspeed
+  - platform: command_line
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    name: CPU Temperature
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+  - platform: deutsche_bahn
+    from: "Duisburg-Schlenk"
+    to: "Düsseldorf Zoo"
+  - platform: uptime
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+  - platform: darksky
+    api_key: 4d599173790b90fab8cdbc47605519e0
+    forecast:
+      - 0
+    monitored_conditions:
+      - summary
+      - icon
+      - temperature
+  - platform: mqtt
+    name: Zigbee2mqtt Networkmap
+    # if you change base_topic of Zigbee2mqtt, change state_topic accordingly
+    state_topic: zigbee2mqtt/bridge/networkmap/raw
+    value_template: >-
+      {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+    # again, if you change base_topic of Zigbee2mqtt, change json_attributes_topic accordingly
+    json_attributes_topic: zigbee2mqtt/bridge/networkmap/raw
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
