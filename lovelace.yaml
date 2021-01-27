@@ -1,291 +1,721 @@
-custom_header:
-  compact_mode: true
-  editor_warnings: false
-  header_text: Christopher's Apartment
-title: Christophers Apartment
+resources:
+  - url: /local/mini-graph-card-bundle.js?v=0.9.4
+    type: module
+title: ChristopherApartment
 views:
-  - badges: []
+  - path: default_view
+    title: Home
+    icon: 'mdi:home'
+    badges: []
     cards:
-      - cards:
-          - entities:
-              - entity: scene.classic_light
+      - type: vertical-stack
+        title: Lights
+        cards:
+          - type: entities
+            entities:
+              - entity: person.christopher
+              - entity: scene.daily
+              - entity: scene.bright
               - entity: scene.night
-              - entity: scene.calm
-              - entity: scene.away
+              - entity: scene.absent
             show_header_toggle: false
-            title: Scenes
-            type: entities
-          - entities:
-              - entity: light.living_room_ceiling_light
-                name: Living Room Ceiling
-              - entity: light.living_room_corner_light
-                name: Living Room Corner
-              - entity: light.shelly_shrgbw2_6f647c
-                name: Living Room Shelly RGBW
-              - entity: light.kitchen_ceiling_light
-                name: Kitchen Ceiling
-              - entity: light.windowsill_light
-            title: Living Room & Kitchen
-            type: entities
-          - entities:
-              - entity: light.bedroom_ceiling_light
-                name: Bedroom Ceiling
-              - entity: light.bedroom_corner_light
-                name: Bedroom Corner
-            title: Bedroom
-            type: entities
-        type: vertical-stack
-      - cards:
-          - entity: weather.home
-            type: weather-forecast
-          - entities:
-              - entity: sensor.shelly_shht_1_f392d3_temperature
-                name: Living Room
-              - entity: sensor.temperatur_humidity_sensor_0_temperature
-                name: Bathroom
-            hours_to_show: 24
-            refresh_interval: 0
-            title: Temperature
-            type: history-graph
-          - entities:
-              - entity: sensor.shelly_shht_1_f392d3_humidity
-                name: Living Room
-              - entity: sensor.temperatur_humidity_sensor_0_humidity
-                name: Bathroom
-            hours_to_show: 24
-            refresh_interval: 0
-            title: Humidity
-            type: history-graph
-        type: vertical-stack
-      - cards:
-          - animate: false
+          - type: glance
             entities:
-              - color: green
-                entity: sensor.power_draw_total
-                name: Total
-              - color: red
-                entity: sensor.computer_tv_network_energy_power
-                name: 'PC, TV & Network'
-              - color: blue
-                entity: sensor.fridge_freezer_coffee_machine_energy_power
-                name: Fridge & Freezer
-              - color: white
-                entity: sensor.washing_machine_energy_power
-                name: Washing Machine
-              - color: purple
-                entity: sensor.bedroom_electronics_energy_power
-                name: Bedroom Electronics
+              - entity: light.bulb1sw_light
+                name: Bedroom Ceiling
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+              - entity: light.bedroom_side
+                name: Bedroom Side
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+              - entity: light.living_room_ceiling
+                name: Living Room Ceiling
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+              - entity: switch.living_room_corner
+                name: Living Room Corner
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+              - entity: light.bulb2sw_light
+                name: Hallway Ceiling
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+              - entity: light.bulb0sw_light
+                name: Bathroom
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+              - entity: switch.computer_bedroom
+                name: Workspace
+                show_last_changed: true
+                tap_action:
+                  action: toggle
+            state_color: true
+            columns: 3
+            show_icon: true
+            show_name: true
+            show_state: true
+      - type: vertical-stack
+        title: Temperature & Humidity
+        cards:
+          - entities:
+              - entity: sensor.env2_temperature
+                name: Bathroom
+              - entity: sensor.env1_temperature
+                name: Living Room
+              - entity: sensor.env3_temperature
+                name: Fridge
+              - entity: sensor.env0_temperature
+                name: Outside
+            show_header_toggle: false
+            type: entities
+            state_color: true
+          - type: history-graph
+            entities:
+              - entity: sensor.env2_temperature
+                name: Bathroom
+              - entity: sensor.env1_temperature
+                name: Living Room
+              - entity: sensor.env3_temperature
+                name: Fridge
+              - entity: sensor.env0_temperature
+                name: Outside
+            refresh_interval: 0
+            hours_to_show: 24
+          - type: history-graph
+            entities:
+              - entity: sensor.env2_humidity
+                name: Bathroom
+              - entity: sensor.env1_humidity
+                name: Living Room
+              - entity: sensor.env3_humidity
+                name: Fridge
+              - entity: sensor.env0_humidity
+                name: Outside
+            hours_to_show: 24
+            refresh_interval: 0
+      - type: vertical-stack
+        title: 'Power Usage [Yesterday / Current]'
+        cards:
+          - type: history-graph
+            entities:
+              - entity: sensor.living_room_corner_energy_yesterday
+                name: Living Room Lamp
+              - entity: sensor.network_energy_yesterday
+                name: Network
+              - entity: sensor.computer_bedroom_energy_yesterday
+                name: Workspace
+            hours_to_show: 120
+            refresh_interval: 0
+          - type: history-graph
+            entities:
+              - entity: sensor.living_room_corner_energy_power
+                name: Living Room Lamp
+              - entity: sensor.network_energy_power
+                name: Network
+              - entity: sensor.computer_bedroom_energy_power
+                name: Workspace
             hours_to_show: 12
-            icon: 'mdi:power'
-            line_width: 2
-            name: 'Energy: Power Draw'
-            points_per_hour: 4
-            show:
-              average: true
-              extrema: true
-            type: 'custom:mini-graph-card'
-          - aggregate_func: max
-            animate: false
+            refresh_interval: 0
+      - type: horizontal-stack
+        title: Misc
+        cards:
+          - type: glance
             entities:
-              - color: green
-                entity: sensor.power_consume_total_yesterday
-                name: Total
-              - color: red
-                entity: sensor.computer_tv_network_energy_yesterday
-                name: 'PC, TV & Network'
-              - color: blue
-                entity: sensor.fridge_freezer_coffee_machine_energy_yesterday
-                name: Fridge & Freezer
-              - color: white
-                entity: sensor.washing_machine_energy_yesterday
-                name: Washing Machine
-              - color: purple
-                entity: sensor.bedroom_electronics_energy_yesterday
-                name: Bedroom Electronics
-            group_by: date
-            hours_to_show: 168
-            icon: 'mdi:power'
-            line_width: 2
-            name: 'Energy: Total Yesterday'
-            show:
-              average: true
-              extrema: true
-            smoothing: false
-            type: 'custom:mini-graph-card'
-        type: vertical-stack
-      - cards:
-          - entity: sensor.shelly_shht_1_f392d3_humidity
-            max: 100
-            min: 0
-            name: Humidity Living Room
-            severity:
-              green: 40
-              red: 80
-              yellow: 60
-            type: gauge
-          - entity: sensor.temperatur_humidity_sensor_0_humidity
-            max: 100
-            min: 0
-            name: Humidity Bathroom
-            severity:
-              green: 40
-              red: 80
-              yellow: 60
-            type: gauge
-        type: horizontal-stack
-      - entity: sensor.duisburg_schlenk_to_dusseldorf_zoo
-        type: entity
-        unit: Uhr
-      - type: entities
-        entities:
-          - entity: media_player.apartment_audio
-          - entity: media_player.living_room_tv
-          - entity: person.christopher
-          - entity: device_tracker.pixel_3
-          - entity: sensor.pixel_3_battery_state
-          - entity: sensor.battery_level
-          - entity: binary_sensor.occupancy_sensor_occupancy
-            name: Mail
-            icon: 'mdi:mail'
-          - entity: binary_sensor.contact_sensor_0_contact
-            name: Door
-    path: default_view
-    theme: Backend-selected
-    title: Main
-  - badges: []
-    cards:
-      - entities:
-          - entity: sensor.music_control_battery
-          - entity: sensor.occupancy_sensor_battery
-          - entity: sensor.remote_control_battery
-          - entity: sensor.switch_bedroom_battery
-          - entity: sensor.switch_entrance_battery
-          - entity: sensor.switch_living_room_battery
-          - entity: sensor.contact_sensor_0_battery
-          - entity: sensor.temperatur_humidity_sensor_0_battery
-        hours_to_show: 24
-        refresh_interval: 0
-        title: Battery
-        type: history-graph
-      - entities:
-          - entity: sensor.bedroom_ceiling_linkquality
-          - entity: sensor.bedroom_corner_linkquality
-          - entity: sensor.kitchen_ceiling_linkquality
-          - entity: sensor.living_room_ceiling_linkquality
-          - entity: sensor.living_room_corner_linkquality
-          - entity: sensor.music_control_linkquality
-          - entity: sensor.occupancy_sensor_linkquality
-          - entity: sensor.remote_control_linkquality
-          - entity: sensor.switch_bedroom_linkquality
-          - entity: sensor.switch_entrance_linkquality
-          - entity: sensor.switch_entrance_linkquality
-          - entity: sensor.switch_living_room_linkquality
-          - entity: sensor.0x680ae2fffe1c569f_linkquality
-          - entity: sensor.contact_sensor_0_linkquality
-          - entity: sensor.temperatur_humidity_sensor_0_linkquality
-        hours_to_show: 24
-        refresh_interval: 10
-        title: Link Quality
-        type: history-graph
-      - entities:
-          - entity: sensor.cpu_temperature
-        hours_to_show: 72
-        refresh_interval: 600
-        title: CPU Temperature
-        type: history-graph
-      - entities:
-          - entity: sensor.speedtest_download
-          - entity: sensor.speedtest_upload
-        hours_to_show: 24
-        refresh_interval: 0
-        title: DSL / Cable Speed
-        type: history-graph
-      - cards:
-          - entities:
-              - entity: binary_sensor.minecraft_christopherpfister_de_status
-              - entity: sensor.minecraft_christopherpfister_de_players_online
-              - entity: sensor.minecraft_christopherpfister_de_latency_time
-            title: Minecraft Server
-            type: entities
-        type: vertical-stack
-      - entities:
-          - entity: sensor.pi_hole_dns_queries_today
-          - entity: sensor.pi_hole_dns_queries_cached
-          - entity: sensor.pi_hole_ads_percentage_blocked_today
-          - entity: sensor.pi_hole_dns_unique_clients
-        title: Pi-hole DNS
-        type: entities
-      - cards:
-          - css: |
-              :host {
-                --zigbee2mqtt-networkmap-node-color: rgba(18, 120, 98, .7);
-                --zigbee2mqtt-networkmap-node-fill-color: #dcfaf3;
-                --zigbee2mqtt-networkmap-node-pinned-color: rgba(190, 56, 93, .6);
-                --zigbee2mqtt-networkmap-link-color: rgba(18, 120, 98, .5);
-                --zigbee2mqtt-networkmap-hover-color: #be385d;
-                --zigbee2mqtt-networkmap-link-selected-color: rgba(202, 164, 85, .6);
-                --zigbee2mqtt-networkmap-label-color: #127862;
-                --zigbee2mqtt-networkmap-arrow-color: rgba(18, 120, 98, 0.7);
-                --zigbee2mqtt-networkmap-node-coordinator-color: rgba(224, 78, 93, .7);
-                --zigbee2mqtt-networkmap-node-router-color: rgba(0, 165, 255, .7);
-              }
-            entity: sensor.zigbee2mqtt_networkmap
-            font_size: 12
-            force: 3000
-            height: 400
-            link_width: 2
-            mqtt_base_topic: zigbee2mqtt
-            node_size: 16
-            type: 'custom:zigbee2mqtt-networkmap'
-        title: Zigbee Network
-        type: vertical-stack
-      - entities:
-          - entity: sensor.uptime
-          - entity: sensor.cpu_speed
-          - entity: sensor.cpu_temperature
-          - entity: sensor.load_5m
-          - entity: sensor.disk_use_percent
-          - entity: sensor.speedtest_ping
-        show_header_toggle: false
-        title: System
-        type: entities
-      - cards:
-          - entities:
-              - entity: sensor.hacs
-            type: entities
-          - entities:
+              - entity: binary_sensor.contact0_contact
+                name: Balcony Door
+                show_last_changed: true
+              - entity: binary_sensor.movement0_occupancy
+                name: Mailbox
+                show_last_changed: true
               - entity: binary_sensor.updater
-                name: Home Assistant Update
-              - entity: binary_sensor.bedroom_ceiling_update_available
-                name: Bedroom Ceiling
-              - entity: binary_sensor.bedroom_corner_update_available
-                name: Bedroom Corner
-              - entity: binary_sensor.living_room_corner_update_available
-                name: Living Room Corner
-              - entity: binary_sensor.kitchen_ceiling_update_available
-                name: Kitchen Ceiling
-              - entity: binary_sensor.living_room_ceiling_update_available
-                name: Living Room Ceiling
-              - entity: binary_sensor.music_control_update_available
-                name: Music Control
-              - entity: binary_sensor.occupancy_sensor_update_available
-                name: Occupancy Sensor
-              - entity: binary_sensor.remote_control_update_available
-                name: Remote Control
-              - entity: binary_sensor.signal_repeater_update_available
-                name: Signal Repeater
-              - entity: binary_sensor.switch_entrance_update_available
-                name: Switch Entrance
-              - entity: binary_sensor.switch_living_room_update_available
-                name: Switch Living Room
-              - entity: binary_sensor.switch_bedroom_update_available
-                name: Switch Bedroom
-            state_filter:
-              - 'on'
-            type: entity-filter
-        title: Updates
-        type: vertical-stack
-    icon: ''
-    panel: false
-    path: system
-    title: System
+                name: HA Update
+              - entity: sun.sun
+            state_color: true
+      - entity: weather.christopherapartment
+        type: weather-forecast
+  - title: Servers
+    path: servers
+    icon: 'mdi:server'
+    badges: []
+    cards:
+      - type: vertical-stack
+        title: shayla
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.shayla_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.shayla_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.shayla_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.shayla_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.shayla_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 0
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.shayla_host_os
+                    - sensor.shayla_last_boot
+                    - sensor.shayla_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.shayla_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: shayla - System offline
+      - type: vertical-stack
+        title: elliot
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.elliot_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.elliot_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.elliot_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.elliot_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.elliot_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 0
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.elliot_host_os
+                    - sensor.elliot_last_boot
+                    - sensor.elliot_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.elliot_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: elliot - System offline
+      - type: vertical-stack
+        title: darlene
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.darlene_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.darlene_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.darlene_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.darlene_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.darlene_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 0
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.darlene_host_os
+                    - sensor.darlene_last_boot
+                    - sensor.darlene_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.darlene_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: darlene - System offline
+      - type: vertical-stack
+        title: dominique
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.dominique_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.dominique_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.dominique_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.dominique_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.dominique_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 0
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.dominique_host_os
+                    - sensor.dominique_last_boot
+                    - sensor.dominique_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.dominique_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: dominique - System offline
+      - type: vertical-stack
+        title: joanna
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.joanna_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.joanna_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.joanna_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.joanna_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.joanna_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 0
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.joanna_host_os
+                    - sensor.joanna_last_boot
+                    - sensor.joanna_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.joanna_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: joanna - System offline
+      - type: vertical-stack
+        title: tyrell
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.tyrell_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.tyrell_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.tyrell_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.tyrell_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.tyrell_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 0
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.tyrell_host_os
+                    - sensor.tyrell_last_boot
+                    - sensor.tyrell_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.tyrell_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: tyrell - System offline
+      - type: vertical-stack
+        title: whiterose
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.whiterose_host_ip
+                state_not: unavailable
+            card:
+              type: 'custom:vertical-stack-in-card'
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.whiterose_cpu_usage
+                      name: CPU
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                    - type: 'custom:mini-graph-card'
+                      entities:
+                        - sensor.whiterose_memory_use
+                      name: Memory
+                      line_color: lime
+                      line_width: 2
+                      font_size: 85
+                      hours_to_show: 24
+                      height: 100
+                      upper_bound: 100
+                      lower_bound: 0
+                - type: 'custom:bar-card'
+                  entity: sensor.whiterose_temperature
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  max: 85
+                  min: 20
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 59
+                    - color: Orange
+                      from: 60
+                      to: 79
+                    - color: Red
+                      from: 80
+                      to: 150
+                - type: 'custom:bar-card'
+                  entity: sensor.whiterose_disk_use
+                  title_position: inside
+                  align: split
+                  show_icon: true
+                  height: 40
+                  width: 50
+                  severity:
+                    - color: Green
+                      from: 20
+                      to: 79
+                    - color: Orange
+                      from: 80
+                      to: 90
+                    - color: Red
+                      from: 90
+                      to: 100
+                - type: entities
+                  entities:
+                    - sensor.whiterose_host_os
+                    - sensor.whiterose_last_boot
+                    - sensor.whiterose_host_ip
+          - type: conditional
+            conditions:
+              - entity: sensor.whiterose_host_ip
+                state: unavailable
+            card:
+              type: markdown
+              content: whiterose - System offline
